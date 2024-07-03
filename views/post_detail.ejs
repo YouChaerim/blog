@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .detail-wrap{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .comment-wrap{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-direction: row;
+    }
+
+    .comment-text{
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-direction: row;
+      padding-top: 10px;
+    }
+
+    .btn-group-custom {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .comment-wrap .btn {
+      padding: 4px 9px; /* 버튼의 패딩을 줄여 크기를 조정 */
+      font-size: 12px; /* 버튼 텍스트의 크기를 줄여 크기를 조정 */
+    }
+    .comment-form {
+      width: 60%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .comment-textarea{
+      width: 80%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-submit {
+      width: 15%;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <%- include('navbar') %>
+  <div class="detail-wrap">
+
+    <h3><%= data.title %></h3>
+
+    <h6><%= data.content %></h6>
+
+    <p>조회수: <%= data.views %></p>
+
+    <p>작성일: <%= data.create_date %></p>
+  </div>
+
+  <div class="detail-wrap">
+    <form action="/detail/<%= data.id %>/comments" class="mb-3 comment-form" method="post">
+      <input type="hidden" name="id" value="<%= data.id %>" />
+      <textarea class="form-control mr-sm-2 comment-textarea" type="text" placeholder="댓글을 작성해주세요" name="comment"></textarea>
+      <button class="btn btn-outline-success btn-submit" type="submit">등록하기</button>
+    </form>
+  </div>
+
+  <div class="detail-wrap">
+    <% for(let i = 0; i < commentdata.length; i++) { %>
+      <div class="comment-wrap">
+        <div class="comment-text">
+          <p><%= commentdata[i].comment %></p>
+          <p>작성일: <%= commentdata[i].comment_date %></p>
+        </div>
+
+        <form action="/detail/<%= data.id %>/comments/<%= commentdata[i].id %>/delete" method="get">
+          <button type="submit" class="btn btn-outline-success">삭제하기</button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+
+  <div class="btn-group-custom">
+    <form action="/update/<%= data.id %>" method="post">
+      <button type="submit" class="btn btn-success ">수정하기</button>
+    </form>
+  
+    <form action="/delete/<%= data.id %>" method="get">
+      <button type="submit" class="btn btn-success">삭제하기</button>
+    </form>
+  </div>
+
+</body>
+</html>
